@@ -69,3 +69,16 @@ Un blog très pertinent  : http://laravel.sillo.org/
 ## Le mcd de l'application
 
 [mcd]: https://raw.githubusercontent.com/NF-yac/todo-b2-20-21/master/database/mcd/todo.svg "MCD de l'application"
+
+#Hélie Lévy de Mareüil
+Voici mon compte rendu sur le devoir.
+
+Ajout d'un bouton "Ajouter une board." sur la route /boards
+
+##Création d'une policy TaskPolicy
+Ajout de règles en accord avec les cas d'utilisation prédéfinis.
+L'objectif de cette policy est d'empêcher les utilisateurs de pouvoir modifier
+les objets "Task" sans les droits pertinents.  
+
+La policy fonctionne sur la vue mais l'implémentation sur le modèle ne fonctionne pas encore. En conséquence, 
+un utilisateur peut forger ses propres requêtes et l'application ne fera pas de vérification.

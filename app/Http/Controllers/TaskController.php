@@ -8,6 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        /*
+            Cette fonction gère directement les autorisations pour chacune des méthodes du contrôleur
+            en fonction des méthodes de BoardPolicy(viewAny, view, update, ....)
+            https://laravel.com/docs/8.x/authorization#authorizing-resource-controllers
+        */
+        $this->authorizeResource(Task::class, 'task');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +43,7 @@ class TaskController extends Controller
      * Show the form for creating a new resource from a specific board.
      *
      * @param Board $board : le board pour lequel on crée une tâche
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Board $board)
@@ -34,7 +51,7 @@ class TaskController extends Controller
         //
         $user = Auth::user();
         $categories = Category::all();
-        return view('boards.tasks.create', ["user" => $user, "categories" => $categories, 'board' => $board]); 
+        return view('boards.tasks.create', ["user" => $user, "categories" => $categories, 'board' => $board]);
     }
 
     /**
@@ -48,13 +65,13 @@ class TaskController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255', 
-            'description' => 'max:4096', 
+            'title' => 'required|string|max:255',
+            'description' => 'max:4096',
             'due_date' => 'required|date|after:today',
             'category_id' => 'nullable|integer|exists:categories,id',
         ]);
         // TODO : il faut vérifier que le board appartient bien à l'utilisateur :(
-        $validatedData['board_id'] = $board->id; 
+        $validatedData['board_id'] = $board->id;
         Task::create($validatedData); // Nouvelle méthode création, sans avoir à affecter propriété par propriété
         return redirect()->route('tasks.index', $board);
     }
@@ -97,14 +114,14 @@ class TaskController extends Controller
     public function update(Request $request, Board $board, Task $task)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255', 
-            'description' => 'max:4096', 
+            'title' => 'required|string|max:255',
+            'description' => 'max:4096',
             'due_date' => 'required|date|after:today',
             'state' => 'required|in:todo,ongoing,done',
             'category_id' => 'nullable|integer|exists:categories,id',
         ]);
         // TODO : il faut vérifier que le board appartient bien à l'utilisateur :(
-        $validatedData['board_id'] = $board->id; 
+        $validatedData['board_id'] = $board->id;
         $task->update($validatedData); // Nouvelle méthode création, sans avoir à affecter propriété par propriété
         return redirect()->route('tasks.index', $board);
     }

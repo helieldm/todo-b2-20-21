@@ -36,9 +36,11 @@ Route::delete('boards/{board}', [BoardController::class, 'destroy'])->middleware
 // Route::resource('boards', BoardController::class);
 
 Route::resource("/boards/{board}/tasks", TaskController::class)->middleware('auth');
-// Ajout de nouvelles routes pour pouvoir créer la tâche directement depuis le board : 
+// Ajout de nouvelles routes pour pouvoir créer la tâche directement depuis le board :
 // Route::get('boards/{board}/tasks/create', [TaskController::class, 'createFromBoard'])->middleware('auth')->name('boards.tasks.create');
-// Route::post('boards/{board}/tasks', [TaskController::class, 'storeFromBoard'])->middleware('auth')->name('boards.tasks.store');
+// Route::post('boards/{board}/tasks', [TaskController::class, 'storeFromBoard'])->middleware('auth')->name('boards.tasks.store')
+
+
 
 Route::post('boards/{board}/users', [BoardUserController::class, 'store'])->middleware('auth')->name('boards.users.store');
 Route::delete('boarduser/{BoardUser}', [BoardUserController::class, 'destroy'])->middleware('auth')->name('boards.users.destroy');
